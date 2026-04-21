@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Mic Night</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="icon" href="Favicon_32x32.png" sizes="32x32">
+    <link rel="icon" href="Favicon_32x32.png" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="Favicon_32x32.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            /* Improved mobile-friendly base gradient */
+            background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%),
+                        radial-gradient(circle at 100% 100%, #312e81 0%, #020617 50%);
+            background-attachment: fixed;
+            background-color: #020617;
+            overflow-x: hidden;
+        }
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Loading Animation Styles */
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #020617;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .mic-icon {
+            font-size: 3rem;
+            color: #818cf8;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 0px #6366f1); }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 20px #6366f1); }
+            100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 0px #6366f1); }
+        }
+
+        .loader-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            letter-spacing: 0.1em;
+            color: #cbd5e1;
+            animation: fadeInOut 2s infinite ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Attractive Background Elements - Optimized for Mobile */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.25;
+            animation: pulse 10s infinite alternate ease-in-out;
+        }
+        .glow-1 { width: 80vw; height: 80vw; background: #6366f1; top: -20%; left: -20%; }
+        .glow-2 { width: 70vw; height: 70vw; background: #a855f7; top: 20%; right: -10%; animation-delay: -3s; }
+        .glow-3 { width: 90vw; height: 90vw; background: #f43f5e; bottom: -30%; left: 10%; animation-delay: -6s; }
+
+        @keyframes pulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.2; }
+            100% { transform: scale(1.1) translate(3%, 3%); opacity: 0.3; }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glass Effects */
+        .glass {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+        
+        .placeholder-box {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 1.5rem;
+            transition: border-color 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Ensure text gradient works on all mobile browsers */
+        .gradient-text {
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col items-center">
+
+    <!-- Loading Overlay -->
+    <div id="loader-wrapper">
+        <div class="loader-content">
+            <i class="fa-solid fa-microphone-lines mic-icon"></i>
+            <p class="loader-text">Preparing the Stage...</p>
+        </div>
+    </div>
+
+    <!-- Background Layers -->
+    <div class="bg-mesh">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <!-- Top Section: Logo and Title -->
+    <nav class="w-full max-w-4xl px-6 pt-12 pb-8 flex flex-col items-center gap-6">
+        <!-- LOGO AREA -->
+        <div class="w-32 h-32 md:w-40 md:h-40 placeholder-box rounded-full mb-2 glass border-dashed overflow-hidden">
+            <img src="Logo.png">
+            <span class="hidden text-xs font-bold uppercase tracking-widest">Logo</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold serif tracking-tight text-center leading-tight">
+            Open Mic <br class="md:hidden"/> <span class="gradient-text">Night</span>
+        </h1>
+    </nav>
+
+    <!-- Top Quick Links (Registration & Guidelines) -->
+    <section class="w-full max-w-2xl px-6 mb-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- REGISTRATION LINK -->
+        <a href="https://forms.google.com" target="_blank" class="btn-primary flex items-center justify-center gap-3 p-5 rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200">
+            <i class="fa-solid fa-pen-to-square text-xl"></i>
+            <span class="font-bold text-lg">Register Now</span>
+        </a>
+        
+        <!-- GUIDELINES LINK (Google Drive) -->
+        <a href="https://drive.google.com" target="_blank" class="glass flex items-center justify-center gap-3 p-5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-200 text-slate-200 hover:scale-[1.02] active:scale-95">
+            <i class="fa-solid fa-file-lines text-xl"></i>
+            <span class="font-bold text-lg">View Guidelines</span>
+        </a>
+    </section>
+
+    <!-- Poster Section -->
+    <section class="w-full max-w-2xl px-6 mb-20">
+        <!-- POSTER AREA -->
+        <div class="aspect-square w-full placeholder-box glass border-dashed shadow-2xl overflow-hidden relative group">
+            <img src="poster.jpeg" alt="Event Poster" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<p class=\'font-bold opacity-40\'>EVENT POSTER</p>';">
+            <div class="absolute inset-0 bg-gradient-to-t from-indigo-500/10 to-transparent pointer-events-none"></div>
+        </div>
+    </section>
+
+    <!-- Social / Footer -->
+    <footer class="w-full py-12 border-t border-white/5 bg-black/40 text-center mt-auto">
+        <p class="text-slate-500 text-xs mb-6 uppercase tracking-[0.3em] font-semibold">Join our community</p>
+        
+        <!-- INSTAGRAM LINK -->
+        <a href="" target="_blank" class="inline-flex items-center gap-4 glass px-10 py-4 rounded-full hover:bg-gradient-to-r hover:from-pink-600/20 hover:to-purple-600/20 hover:text-pink-400 transition-all duration-300 transform hover:-translate-y-1">
+            <i class="fa-brands fa-instagram text-2xl"></i>
+            <span class="font-bold tracking-tight text-lg">@thaalam</span>
+        </a>
+
+        <div class="mt-12 text-[10px] text-slate-600 uppercase tracking-[0.4em] font-medium">
+            &copy; 2026 Open Mic Night &bull; All Rights Reserved
+        </div>
+    </footer>
+
+    <script>
+        // Hide loader when page is fully loaded
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader-wrapper');
+            // Adding a slight delay to ensure the animation is seen
+            setTimeout(() => {
+                loader.classList.add('loader-hidden');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
