@@ -10,8 +10,9 @@
     <link rel="icon" href="Favicon_32x32.png" sizes="32x32">
     <link rel="icon" href="Favicon_32x32.png" type="image/svg+xml">
     <link rel="apple-touch-icon" href="Favicon_32x32.png">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -43,13 +44,6 @@
             transition: opacity 0.8s ease, visibility 0.8s;
         }
         
-        .loader-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
         .mic-icon {
             font-size: 3rem;
             color: #818cf8;
@@ -62,25 +56,12 @@
             100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 0px #6366f1); }
         }
 
-        .loader-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.25rem;
-            letter-spacing: 0.1em;
-            color: #cbd5e1;
-            animation: fadeInOut 2s infinite ease-in-out;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
         .loader-hidden {
             opacity: 0;
             visibility: hidden;
         }
 
-        /* Attractive Background Elements - Optimized for Mobile */
+        /* Attractive Background Elements */
         .bg-mesh {
             position: fixed;
             top: 0;
@@ -121,7 +102,7 @@
             background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: none !important; /* Force remove any border */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
         
@@ -133,13 +114,13 @@
             color: rgba(255, 255, 255, 0.4);
             background: rgba(255, 255, 255, 0.03);
             border-radius: 1.5rem;
-            transition: border-color 0.3s;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
         }
+
         /* Shimmer Animation for the Secondary Button */
         .shimmer-btn {
             position: relative;
@@ -164,7 +145,6 @@
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        /* Ensure text gradient works on all mobile browsers */
         .gradient-text {
             background: linear-gradient(to right, #818cf8, #c084fc);
             -webkit-background-clip: text;
@@ -172,15 +152,22 @@
             background-clip: text;
             color: transparent;
         }
+
+        .badge-glass {
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col items-center">
 
     <!-- Loading Overlay -->
     <div id="loader-wrapper">
-        <div class="loader-content">
+        <div class="loader-content flex flex-col items-center gap-6">
             <i class="fa-solid fa-microphone-lines mic-icon"></i>
-            <p class="loader-text">Preparing the Stage...</p>
+            <p class="serif text-xl tracking-widest opacity-50">Thaalam</p>
         </div>
     </div>
 
@@ -193,42 +180,40 @@
     <div class="grid-overlay"></div>
 
     <!-- Top Section: Logo and Title -->
-    <nav class="w-full max-w-4xl px-6 pt-12 pb-8 flex flex-col items-center gap-6">
+    <nav class="w-full max-w-5xl px-6 pt-12 pb-8 flex flex-col items-center gap-6">
         <!-- LOGO AREA -->
         <div class="w-32 h-32 md:w-40 md:h-40 placeholder-box rounded-full mb-2 glass border-dashed overflow-hidden">
-            <img src="Logo.png">
-            <span class="hidden text-xs font-bold uppercase tracking-widest">Logo</span>
+            <img src="Logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none';">
+            <span class="text-xs font-bold uppercase tracking-widest opacity-40">Logo</span>
         </div>
-        <h1 class="text-4xl md:text-6xl font-bold serif tracking-tight text-center leading-tight">
-            Open Mic <br class="md:hidden"/> <span class="gradient-text">Night</span>
-        </h1>
-        <!-- Updated Event Info - Optimized Font for uniform Number/Character sizing -->
-            <div class="mt-1 badge-glass px-6 pt-2 pb-6 md:pt-1 md:pb-4 rounded-[2rem] md:rounded-full flex flex-col md:flex-row items-center justify-center gap-2 md:gap-0 shadow-2xl border-white/5 w-fit max-w-[95vw] shimmer-btn">
-                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center font-mono">Local Sustainable Living, Maradu</span>
-                <span class="hidden md:inline mx-4 opacity-30 font-light text-slate-400 font-serif">|</span>
-                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center uppercase md:normal-case font-mono">Saturday, May 2</span>
+        
+        <div class="text-center flex flex-col items-center">
+            <h1 class="text-4xl md:text-6xl font-bold serif tracking-tight leading-tight">
+                Open Mic <br class="md:hidden"/> <span class="gradient-text">Night</span>
+            </h1>
+            
+            <!-- Event Info -->
+            <div class="mt-8 badge-glass px-6 py-6 md:py-4 rounded-[2rem] md:rounded-full flex flex-col md:flex-row items-center justify-center gap-2 md:gap-0 w-fit max-w-[95vw]">
+                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center">Local Sustainable Living, Maradu</span>
                 <span class="hidden md:inline mx-4 opacity-30 font-light text-slate-400">|</span>
-                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center font-mono">9 PM Onwards</span>
+                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center uppercase md:normal-case">Saturday, May 2</span>
+                <span class="hidden md:inline mx-4 opacity-30 font-light text-slate-400">|</span>
+                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center">9 PM Onwards</span>
             </div>
+        </div>
     </nav>
 
-    <!-- Top Quick Links (Registration & Guidelines) -->
-    <section class="w-full max-w-2xl px-6 mb-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <!-- Top Quick Link (Registration) -->
+    <section class="w-full max-w-2xl px-6 mb-12 flex justify-center">
         <!-- REGISTRATION LINK -->
-        <a href="https://forms.google.com" target="_blank" class="btn-primary flex items-center justify-center gap-3 p-5 rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 shimmer-btn">
+        <a href="https://forms.google.com" target="_blank" class="w-full sm:w-3/4 btn-primary flex items-center justify-center gap-3 p-5 rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200">
             <i class="fa-solid fa-pen-to-square text-xl"></i>
             <span class="font-bold text-lg">Register Now</span>
-        </a>
-        
-        <!-- GUIDELINES LINK (Google Drive) -->
-        <a href="https://drive.google.com" target="_blank" class="glass flex items-center justify-center gap-3 p-5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-200 text-slate-200 hover:scale-[1.02] active:scale-95 shimmer-btn">
-            <i class="fa-solid fa-file-lines text-xl"></i>
-            <span class="font-bold text-lg">View Guidelines</span>
         </a>
     </section>
 
     <!-- Poster Section -->
-    <section class="w-full max-w-2xl px-6 mb-8">
+    <section class="w-full max-w-2xl px-6 mb-12">
         <!-- POSTER AREA -->
         <div class="aspect-square w-full placeholder-box glass border-dashed shadow-2xl overflow-hidden relative group">
             <img src="poster.jpeg" alt="Event Poster" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<p class=\'font-bold opacity-40\'>EVENT POSTER</p>';">
@@ -237,7 +222,7 @@
     </section>
 
     <!-- Directions Section (Moved after Poster) -->
-    <section class="w-full max-w-2xl px-6 mb-4 flex justify-center">
+    <section class="w-full max-w-2xl px-6 mb-20 flex justify-center">
         <!-- DIRECTIONS LINK - Get Directions, No Border, Shimmer Effect -->
         <a href="https://www.google.com/maps/search/?api=1&query=Local+Sustainable+Living+Maradu" target="_blank" class="w-full sm:w-3/4 glass shimmer-btn flex items-center justify-center gap-3 p-5 rounded-2xl hover:bg-white/5 transition-all duration-200 text-slate-200 hover:scale-[1.02] active:scale-95">
             <i class="fa-solid fa-location-arrow text-xl"></i>
@@ -250,12 +235,12 @@
         <p class="text-slate-500 text-xs mb-6 uppercase tracking-[0.3em] font-semibold">Join our community</p>
         
         <!-- INSTAGRAM LINK -->
-        <a href="https://www.instagram.com/thaalam_openmic?igsh=MTNvcWZmOGx3b3Js" target="_blank" class="inline-flex items-center gap-4 glass px-10 py-4 rounded-full hover:bg-gradient-to-r hover:from-pink-600/20 hover:to-purple-600/20 hover:text-pink-400 transition-all duration-300 transform hover:-translate-y-1 shimmer-btn">
+        <a href="https://www.instagram.com/thaalam_openmic?igsh=MTNvcWZmOGx3b3Js" target="_blank" class="inline-flex items-center gap-4 glass shimmer-btn px-10 py-4 rounded-full hover:bg-gradient-to-r hover:from-pink-600/20 hover:to-purple-600/20 hover:text-pink-400 transition-all duration-300 transform hover:-translate-y-1">
             <i class="fa-brands fa-instagram text-2xl"></i>
             <span class="font-bold tracking-tight text-lg">@thaalam_openmic</span>
         </a>
 
-        <div class="mt-8 text-[10px] text-slate-600 uppercase tracking-[0.4em] font-medium">
+        <div class="mt-12 text-[10px] text-slate-600 uppercase tracking-[0.4em] font-medium">
             &copy; 2026 Open Mic Night &bull; All Rights Reserved
         </div>
     </footer>
@@ -264,7 +249,6 @@
         // Hide loader when page is fully loaded
         window.addEventListener('load', function() {
             const loader = document.getElementById('loader-wrapper');
-            // Adding a slight delay to ensure the animation is seen
             setTimeout(() => {
                 loader.classList.add('loader-hidden');
             }, 1000);
