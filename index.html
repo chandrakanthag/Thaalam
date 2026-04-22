@@ -181,6 +181,23 @@
             background-clip: text;
             color: transparent;
         }
+
+        /* Countdown Card Animations */
+        .countdown-card {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .countdown-value {
+            font-variant-numeric: tabular-nums;
+            animation: digit-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes digit-pulse {
+            0%, 100% { opacity: 0.85; }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(129, 140, 248, 0.6); }
+        }
+
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col items-center">
@@ -234,6 +251,47 @@
             <i class="fa-solid fa-file-lines text-xl"></i>
             <span class="font-bold text-lg">View Guidelines</span>
         </a>  -->
+
+        <!-- Countdown Timer Section -->
+        <div class="w-full glass rounded-3xl p-6 md:p-8 flex flex-col items-center gap-6 border-white/10 shadow-2xl relative overflow-hidden">
+            <!-- Subtle background light for the countdown -->
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500/20 blur-3xl rounded-full"></div>
+            
+            <div id="countdown" class="grid grid-cols-4 gap-3 md:gap-6 w-full">
+                <!-- Days -->
+                <div class="countdown-card flex flex-col items-center gap-1">
+                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-white/10">
+                        <span id="days" class="text-2xl md:text-4xl font-bold mono gradient-text countdown-value">00</span>
+                    </div>
+                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Days</span>
+                </div>
+                <!-- Hours -->
+                <div class="countdown-card flex flex-col items-center gap-1">
+                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-white/10">
+                        <span id="hours" class="text-2xl md:text-4xl font-bold mono gradient-text countdown-value">00</span>
+                    </div>
+                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Hours</span>
+                </div>
+                <!-- Minutes -->
+                <div class="countdown-card flex flex-col items-center gap-1">
+                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-white/10">
+                        <span id="minutes" class="text-2xl md:text-4xl font-bold mono gradient-text countdown-value">00</span>
+                    </div>
+                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Mins</span>
+                </div>
+                <!-- Seconds -->
+                <div class="countdown-card flex flex-col items-center gap-1">
+                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-indigo-500/30 ring-1 ring-indigo-500/20">
+                        <span id="seconds" class="text-2xl md:text-4xl font-bold mono text-white countdown-value">00</span>
+                    </div>
+                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Secs</span>
+                </div>
+            </div>
+            
+            <p id="event-status" class="text-xs text-slate-500 font-medium italic hidden">The stage is live!</p>
+        </div>
+
     </section>
 
     <!-- Poster Section -->
@@ -250,7 +308,7 @@
         <!-- DIRECTIONS LINK - Get Directions, No Border, Shimmer Effect -->
         <a href="https://www.google.com/maps/search/?api=1&query=Local+Sustainable+Living+Maradu" target="_blank" class="w-full sm:w-3/4 glass shimmer-btn flex items-center justify-center gap-3 p-5 rounded-2xl hover:bg-white/5 transition-all duration-200 text-slate-200 hover:scale-[1.02] active:scale-95">
             <i class="fa-solid fa-location-arrow text-xl"></i>
-            <span class="font-bold text-lg">Get Directions</span>
+            <span class="font-bold text-lg">Get Location</span>
         </a>
     </section>
 
@@ -270,6 +328,39 @@
     </footer>
 
     <script>
+
+        // Countdown Logic
+        function updateCountdown() {
+            // Target Date: May 2, 2026, 4:00 PM (16:00:00)
+            const targetDate = new Date("May 2, 2026 16:00:00").getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").classList.add("opacity-50");
+                document.getElementById("event-status").classList.remove("hidden");
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }
+
+        // Initialize Countdown
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
         // Hide loader when page is fully loaded
         window.addEventListener('load', function() {
             const loader = document.getElementById('loader-wrapper');
