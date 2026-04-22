@@ -2,211 +2,155 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Mic Night</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Open Mic Night | Thaalam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-    <link rel="icon" href="Favicon_32x32.png" sizes="32x32">
-    <link rel="icon" href="Favicon_32x32.png" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="Favicon_32x32.png">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@500&display=swap');
         
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #f43f5e;
+            --bg-dark: #020617;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
-            /* Improved mobile-friendly base gradient */
-            background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 50%),
-                        radial-gradient(circle at 100% 100%, #312e81 0%, #020617 50%);
+            background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 70%),
+                        radial-gradient(circle at 100% 100%, #312e81 0%, #020617 70%);
             background-attachment: fixed;
-            background-color: #020617;
+            background-color: var(--bg-dark);
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
-        .serif {
-            font-family: 'Playfair Display', serif;
-        }
+
+        .serif { font-family: 'Playfair Display', serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* Loading Animation Styles */
+        /* Smooth Loader */
         #loader-wrapper {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #020617;
+            inset: 0;
+            background: var(--bg-dark);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
         }
         
-        .loader-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .mic-icon {
-            font-size: 3rem;
-            color: #818cf8;
-            animation: pulse-glow 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse-glow {
-            0% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 0px #6366f1); }
-            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 20px #6366f1); }
-            100% { transform: scale(1); opacity: 0.5; filter: drop-shadow(0 0 0px #6366f1); }
-        }
-
-        .loader-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.25rem;
-            letter-spacing: 0.1em;
-            color: #cbd5e1;
-            animation: fadeInOut 2s infinite ease-in-out;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
         .loader-hidden {
             opacity: 0;
             visibility: hidden;
         }
 
-        /* Attractive Background Elements - Optimized for Mobile */
+        .mic-icon {
+            font-size: 3.5rem;
+            color: #818cf8;
+            animation: pulse-glow 2s infinite ease-in-out;
+            will-change: transform, filter;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px var(--primary)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 20px var(--primary)); }
+        }
+
+        /* Animated Background Elements */
         .bg-mesh {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: -1;
             overflow: hidden;
             pointer-events: none;
         }
+
         .glow {
             position: absolute;
             border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.25;
-            animation: pulse 10s infinite alternate ease-in-out;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: move 20s infinite alternate ease-in-out;
+            will-change: transform;
         }
-        .glow-1 { width: 80vw; height: 80vw; background: #6366f1; top: -20%; left: -20%; }
-        .glow-2 { width: 70vw; height: 70vw; background: #a855f7; top: 20%; right: -10%; animation-delay: -3s; }
-        .glow-3 { width: 90vw; height: 90vw; background: #f43f5e; bottom: -30%; left: 10%; animation-delay: -6s; }
+        .glow-1 { width: 100vw; height: 100vw; background: var(--primary); top: -20%; left: -20%; }
+        .glow-2 { width: 80vw; height: 80vw; background: var(--secondary); top: 20%; right: -10%; animation-delay: -5s; }
+        .glow-3 { width: 90vw; height: 90vw; background: var(--accent); bottom: -30%; left: 10%; animation-delay: -10s; }
 
-        @keyframes pulse {
-            0% { transform: scale(1) translate(0, 0); opacity: 0.2; }
-            100% { transform: scale(1.1) translate(3%, 3%); opacity: 0.3; }
-        }
-
-        .grid-overlay {
-            position: fixed;
-            inset: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-            pointer-events: none;
+        @keyframes move {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, 5%) scale(1.1); }
         }
 
-        /* Glass Effects */
+        /* Glassmorphism */
         .glass {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-        }
-        
-        .placeholder-box {
-            border: 2px dashed rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 1.5rem;
-            transition: border-color 0.3s;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 8px 25px -5px rgba(99, 102, 241, 0.5);
         }
-        /* Shimmer Animation for the Secondary Button */
+
         .shimmer-btn {
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
         }
 
         .shimmer-btn::after {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
+            inset: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: rotate(45deg);
-            animation: shimmer 4s infinite;
+            animation: shimmer 6s infinite;
         }
 
         @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-        .flot-btn {
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: floating-pulse 5s infinite ease-in-out;
+            0% { transform: translateX(-150%) rotate(45deg); }
+            100% { transform: translateX(150%) rotate(45deg); }
         }
 
-        @keyframes floating-pulse {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-5px) scale(1.02); background: rgba(30, 41, 59, 0.8); }
-        }
-        /* Ensure text gradient works on all mobile browsers */
         .gradient-text {
-            background: linear-gradient(to right, #818cf8, #c084fc);
+            background: linear-gradient(to right, #a5b4fc, #d8b4fe);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
             color: transparent;
         }
 
-        /* Countdown Card Animations */
-        .countdown-card {
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .countdown-value {
-            font-variant-numeric: tabular-nums;
-            animation: digit-pulse 2s infinite ease-in-out;
+        /* Responsive Mobile Scaling */
+        @media (max-width: 380px) {
+            .countdown-value { font-size: 1.25rem !important; }
+            .event-badge-text { font-size: 0.75rem !important; }
         }
 
-        @keyframes digit-pulse {
-            0%, 100% { opacity: 0.85; }
-            50% { opacity: 1; text-shadow: 0 0 15px rgba(129, 140, 248, 0.6); }
+        .floating {
+            animation: floating 4s infinite ease-in-out;
         }
 
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col items-center">
+<body class="text-slate-100 flex flex-col items-center">
 
     <!-- Loading Overlay -->
     <div id="loader-wrapper">
-        <div class="loader-content">
+        <div class="flex flex-col items-center gap-6">
             <i class="fa-solid fa-microphone-lines mic-icon"></i>
-            <p class="loader-text">Preparing the Stage...</p>
+            <p class="serif text-xl tracking-widest text-slate-300 animate-pulse">Setting the Stage</p>
         </div>
     </div>
 
@@ -216,133 +160,117 @@
         <div class="glow glow-2"></div>
         <div class="glow glow-3"></div>
     </div>
-    <div class="grid-overlay"></div>
+    <div class="fixed inset-0 bg-[radial-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-[-1]"></div>
 
-    <!-- Top Section: Logo and Title -->
-    <nav class="w-full max-w-4xl px-6 pt-12 pb-8 flex flex-col items-center gap-6">
-        <!-- LOGO AREA -->
-        <div class="w-32 h-32 md:w-40 md:h-40 placeholder-box rounded-full mb-2 glass border-dashed overflow-hidden">
-            <img src="Logo.png">
-            <span class="hidden text-xs font-bold uppercase tracking-widest">Logo</span>
+    <!-- Navigation / Header -->
+    <header class="w-full max-w-lg px-6 pt-10 pb-6 flex flex-col items-center text-center">
+        <!-- Logo -->
+        <div class="w-28 h-28 md:w-36 md:h-36 rounded-full glass border-dashed border-white/20 p-1 mb-6 overflow-hidden floating">
+            <div class="w-full h-full rounded-full bg-slate-800 flex items-center justify-center overflow-hidden">
+                <img src="Logo.png" alt="Thaalam Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150/1e1b4b/ffffff?text=THAALAM'">
+            </div>
         </div>
-        <h1 class="text-4xl md:text-6xl font-bold serif tracking-tight text-center leading-tight">
-            Open Mic <br class="md:hidden"/> <span class="gradient-text">Night</span>
+
+        <h1 class="text-4xl md:text-6xl font-bold serif tracking-tight mb-4">
+            Open Mic <span class="gradient-text block mt-1">Night</span>
         </h1>
-        <!-- Updated Event Info - Optimized Font for uniform Number/Character sizing -->
-            <div class="mt-1 badge-glass px-6 pt-2 pb-6 md:pt-1 md:pb-4 rounded-[2rem] md:rounded-full flex flex-col md:flex-row items-center justify-center gap-2 md:gap-0 shadow-2xl border-white/5 w-fit max-w-[95vw] shimmer-btn">
-                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center font-mono">Local Sustainable Living, Maradu</span>
-                <span class="hidden md:inline mx-4 opacity-30 font-light text-slate-400 font-serif">|</span>
-                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center uppercase md:normal-case font-mono">Saturday, May 2</span>
-                <span class="hidden md:inline mx-4 opacity-30 font-light text-slate-400">|</span>
-                <span class="text-sm md:text-lg text-slate-200 font-medium tracking-wide text-center font-mono ">4 PM Onwards</span>
-            </div>
-    </nav>
 
-    <!-- Top Quick Links (Registration & Guidelines) -->
-    <section class="w-full max-w-2xl px-6 mb-12 grid grid-cols-1 sm:grid-cols-1 gap-4">
-        <!-- REGISTRATION LINK -->
-        <a href="" target="_blank" class="btn-primary flex items-center justify-center gap-3 p-5 rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 shimmer-btn">
+        <!-- Event Badge -->
+        <div class="glass px-5 py-3 rounded-2xl md:rounded-full flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 border-white/5 shadow-xl shimmer-btn w-full">
+            <span class="mono text-xs md:text-sm text-indigo-300 font-medium tracking-tight">Local Sustainable Living, Maradu</span>
+            <span class="hidden md:inline text-white/20">|</span>
+            <div class="flex items-center gap-3">
+                <span class="mono text-xs md:text-sm text-slate-200">Saturday, May 2</span>
+                <span class="text-white/20">•</span>
+                <span class="mono text-xs md:text-sm text-slate-200">4 PM Onwards</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-lg px-6 space-y-8 pb-12">
+        
+        <!-- Action Button -->
+        <a href="#" target="_blank" class="btn-primary flex items-center justify-center gap-3 p-5 rounded-2xl shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300 shimmer-btn">
             <i class="fa-solid fa-pen-to-square text-xl"></i>
-            <span class="font-bold text-lg">Register Now</span>
+            <span class="font-bold text-lg uppercase tracking-wider">Register Now</span>
         </a>
-        
-        <!-- GUIDELINES LINK (Google Drive)
-        <a href="" target="_blank" class="glass flex items-center justify-center gap-3 p-5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-200 text-slate-200 hover:scale-[1.02] active:scale-95 shimmer-btn">
-            <i class="fa-solid fa-file-lines text-xl"></i>
-            <span class="font-bold text-lg">View Guidelines</span>
-        </a>  -->
 
-        <!-- Countdown Timer Section -->
-        <div class="w-full glass rounded-3xl p-6 md:p-8 flex flex-col items-center gap-6 border-white/10 shadow-2xl relative overflow-hidden">
-            <!-- Subtle background light for the countdown -->
-            <div class="absolute -top-10 -left-10 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full"></div>
-            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500/20 blur-3xl rounded-full"></div>
-            
-            <div id="countdown" class="grid grid-cols-4 gap-3 md:gap-6 w-full">
-                <!-- Days -->
-                <div class="countdown-card flex flex-col items-center gap-1">
-                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-white/10">
-                        <span id="days" class="text-2xl md:text-4xl font-bold mono gradient-text countdown-value">00</span>
+        <!-- Countdown -->
+        <div class="glass rounded-3xl p-6 border-white/10 relative overflow-hidden">
+            <div id="countdown" class="grid grid-cols-4 gap-2 sm:gap-4">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-full aspect-square glass rounded-xl flex items-center justify-center border-white/10">
+                        <span id="days" class="text-xl sm:text-3xl font-bold mono gradient-text">00</span>
                     </div>
-                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Days</span>
+                    <span class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Days</span>
                 </div>
-                <!-- Hours -->
-                <div class="countdown-card flex flex-col items-center gap-1">
-                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-white/10">
-                        <span id="hours" class="text-2xl md:text-4xl font-bold mono gradient-text countdown-value">00</span>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-full aspect-square glass rounded-xl flex items-center justify-center border-white/10">
+                        <span id="hours" class="text-xl sm:text-3xl font-bold mono gradient-text">00</span>
                     </div>
-                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Hours</span>
+                    <span class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Hours</span>
                 </div>
-                <!-- Minutes -->
-                <div class="countdown-card flex flex-col items-center gap-1">
-                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-white/10">
-                        <span id="minutes" class="text-2xl md:text-4xl font-bold mono gradient-text countdown-value">00</span>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-full aspect-square glass rounded-xl flex items-center justify-center border-white/10">
+                        <span id="minutes" class="text-xl sm:text-3xl font-bold mono gradient-text">00</span>
                     </div>
-                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Mins</span>
+                    <span class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Mins</span>
                 </div>
-                <!-- Seconds -->
-                <div class="countdown-card flex flex-col items-center gap-1">
-                    <div class="w-full aspect-square md:w-24 md:h-24 glass rounded-2xl flex items-center justify-center border-indigo-500/30 ring-1 ring-indigo-500/20">
-                        <span id="seconds" class="text-2xl md:text-4xl font-bold mono text-white countdown-value">00</span>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-full aspect-square glass rounded-xl flex items-center justify-center border-indigo-500/30 ring-1 ring-indigo-500/20">
+                        <span id="seconds" class="text-xl sm:text-3xl font-bold mono text-white">00</span>
                     </div>
-                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-slate-500 font-semibold mt-1">Secs</span>
+                    <span class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Secs</span>
                 </div>
             </div>
-            
-            <p id="event-status" class="text-xs text-slate-500 font-medium italic hidden">The stage is live!</p>
+            <p id="event-status" class="text-center text-xs text-indigo-400 font-medium italic mt-4 hidden animate-pulse">The spotlight is on. Join us!</p>
         </div>
 
-    </section>
-
-    <!-- Poster Section -->
-    <section class="w-full max-w-2xl px-6 mb-8 ">
-        <!-- POSTER AREA -->
-        <div class="aspect-square w-full placeholder-box glass border-dashed shadow-2xl overflow-hidden relative group flot-btn">
-            <img src="poster.jpeg" alt="Event Poster" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<p class=\'font-bold opacity-40\'>EVENT POSTER</p>';">
-            <div class="absolute inset-0 bg-gradient-to-t from-indigo-500/10 to-transparent pointer-events-none"></div>
+        <!-- Poster Card -->
+        <div class="group relative rounded-3xl overflow-hidden glass p-2 border-white/5 shadow-2xl">
+            <div class="aspect-[4/5] w-full rounded-2xl overflow-hidden relative">
+                <img src="poster.jpeg" alt="Event Poster" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/800x1000/1e1b4b/ffffff?text=THAALAM+OPEN+MIC'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+            </div>
         </div>
-    </section>
 
-    <!-- Directions Section (Moved after Poster) -->
-    <section class="w-full max-w-2xl px-6 mb-4 flex justify-center">
-        <!-- DIRECTIONS LINK - Get Directions, No Border, Shimmer Effect -->
-        <a href="https://www.google.com/maps/search/?api=1&query=Local+Sustainable+Living+Maradu" target="_blank" class="w-full sm:w-3/4 glass shimmer-btn flex items-center justify-center gap-3 p-5 rounded-2xl hover:bg-white/5 transition-all duration-200 text-slate-200 hover:scale-[1.02] active:scale-95">
-            <i class="fa-solid fa-location-arrow text-xl"></i>
-            <span class="font-bold text-lg">Get Location</span>
+        <!-- Location Button -->
+        <a href="https://www.google.com/maps/search/?api=1&query=Local+Sustainable+Living+Maradu" target="_blank" class="glass w-full flex items-center justify-center gap-3 p-5 rounded-2xl border-white/10 hover:bg-white/5 active:scale-95 transition-all duration-300">
+            <i class="fa-solid fa-location-dot text-indigo-400"></i>
+            <span class="font-bold text-slate-200">Find Us on Maps</span>
         </a>
-    </section>
+    </main>
 
-    <!-- Social / Footer -->
-    <footer class="w-full py-12 border-t border-white/5 bg-black/40 text-center mt-auto">
-        <p class="text-slate-500 text-xs mb-6 uppercase tracking-[0.3em] font-semibold">Join our community</p>
-        
-        <!-- INSTAGRAM LINK -->
-        <a href="https://www.instagram.com/thaalam_openmic?igsh=MTNvcWZmOGx3b3Js" target="_blank" class="inline-flex items-center gap-4 glass px-10 py-4 rounded-full hover:bg-gradient-to-r hover:from-pink-600/20 hover:to-purple-600/20 hover:text-pink-400 transition-all duration-300 transform hover:-translate-y-1 shimmer-btn">
-            <i class="fa-brands fa-instagram text-2xl"></i>
-            <span class="font-bold tracking-tight text-lg">@thaalam_openmic</span>
-        </a>
+    <!-- Footer -->
+    <footer class="w-full py-12 px-6 border-t border-white/5 bg-black/40 text-center flex flex-col items-center gap-8">
+        <div>
+            <p class="text-slate-500 text-[10px] uppercase tracking-[0.4em] font-bold mb-4">Stay Tuned</p>
+            <a href="https://www.instagram.com/thaalam_openmic" target="_blank" class="inline-flex items-center gap-3 glass px-8 py-3 rounded-full hover:bg-gradient-to-r hover:from-pink-600/10 hover:to-purple-600/10 transition-all duration-300 group">
+                <i class="fa-brands fa-instagram text-xl group-hover:text-pink-500 transition-colors"></i>
+                <span class="font-bold text-sm">@thaalam_openmic</span>
+            </a>
+        </div>
 
-        <div class="mt-8 text-[10px] text-slate-600 uppercase tracking-[0.4em] font-medium">
-            &copy; 2026 Open Mic Night &bull; All Rights Reserved
+        <div class="text-[9px] text-slate-600 uppercase tracking-[0.5em]">
+            &copy; 2026 Thaalam Open Mic &bull; Kochi
         </div>
     </footer>
 
     <script>
+        // Set target date to May 2, 2026 at 4:00 PM
+        const targetDate = new Date("May 2, 2026 16:00:00").getTime();
 
-        // Countdown Logic
         function updateCountdown() {
-            // Target Date: May 2, 2026, 4:00 PM (16:00:00)
-            const targetDate = new Date("May 2, 2026 16:00:00").getTime();
             const now = new Date().getTime();
             const distance = targetDate - now;
 
             if (distance < 0) {
-                document.getElementById("countdown").classList.add("opacity-50");
+                document.getElementById("countdown").classList.add("opacity-40");
                 document.getElementById("event-status").classList.remove("hidden");
-                document.getElementById("days").innerText = "00";
-                document.getElementById("hours").innerText = "00";
-                document.getElementById("minutes").innerText = "00";
-                document.getElementById("seconds").innerText = "00";
+                ["days", "hours", "minutes", "seconds"].forEach(id => {
+                    document.getElementById(id).innerText = "00";
+                });
                 return;
             }
 
@@ -357,18 +285,24 @@
             document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
         }
 
-        // Initialize Countdown
-        setInterval(updateCountdown, 1000);
+        // Initialize and interval
         updateCountdown();
+        const timer = setInterval(updateCountdown, 1000);
 
-        // Hide loader when page is fully loaded
-        window.addEventListener('load', function() {
+        // Responsive Loader removal
+        window.addEventListener('load', () => {
             const loader = document.getElementById('loader-wrapper');
-            // Adding a slight delay to ensure the animation is seen
             setTimeout(() => {
                 loader.classList.add('loader-hidden');
-            }, 1000);
+            }, 800);
         });
+
+        // Prevention of zoom on double tap for iOS
+        document.addEventListener('touchstart', (event) => {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
