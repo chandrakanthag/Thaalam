@@ -364,10 +364,8 @@
         // Hide loader when page is fully loaded
         window.addEventListener('load', function() {
             const loader = document.getElementById('loader-wrapper');
-            // Adding a slight delay to ensure the animation is seen
-            setTimeout(() => {
-                loader.classList.add('loader-hidden');
-            }, 1000);
+            // Remove the delay or shorten it to make the site feel snappier
+            loader.classList.add('loader-hidden');
         });
     </script>
 </body>
